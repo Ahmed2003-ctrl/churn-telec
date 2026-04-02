@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Telecom Churn Prediction</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: #fff;
+            margin-top: 40px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            width: 90%;
+            max-width: 700px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            display: block;
+        }
+        
+        input,
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .full-width {
+            grid-column: span 2;
+        }
+        
+        button {
+            grid-column: span 2;
+            padding: 12px;
+            background: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        button:hover {
+            background: #45a049;
+        }
+        
+        .result {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #222;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Telecom Churn Prediction</h1>
+        <form id="churnForm">
+            <!-- Example fields (add all required ones) -->
+            <div>
+                <label for="gender">Gender</label>
+                <select id="gender" name="gender">
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+            </div>
+            <div>
+                <label for="SeniorCitizen">Senior Citizen</label>
+                <select id="SeniorCitizen" name="SeniorCitizen">
+          <option value="0">No</option>
+          <option value="1">Yes</option>
+        </select>
+            </div>
+            <div>
+                <label for="Partner">Partner</label>
+                <select id="Partner" name="Partner">
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+            </div>
+            <div>
+                <label for="Dependents">Dependents</label>
+                <select id="Dependents" name="Dependents">
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+            </div>
+            <div>
+                <label for="tenure">Tenure (months)</label>
+                <input type="number" id="tenure" name="tenure" required>
+            </div>
+            <div>
+                <label for="MonthlyCharges">Monthly Charges</label>
+                <input type="number" step="0.01" id="MonthlyCharges" name="MonthlyCharges" required>
+            </div>
+            <div>
+                <label for="TotalCharges">Total Charges</label>
+                <input type="number" step="0.01" id="TotalCharges" name="TotalCharges" required>
+            </div>
+            <!-- Add the rest of your fields here following the same pattern -->
+            <button type="submit">Predict</button>
+        </form>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('churnForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const response = await fetch('/predict', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = "Prediction: " + result.prediction;
+            resultDiv.style.color = result.prediction === "Churn" ? "red" : "green";
+        });
+    </script>
+</body>
+
+</html>
