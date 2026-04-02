@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request , render_template
 import joblib
 import pandas as pd
 from pathlib import Path
@@ -71,5 +71,10 @@ def show():
         return jsonify({'prediction ': 'Churn'})
     else:
         return jsonify({'prediction ': 'Not Churn '})
+
+@app.get('/')
+def index():
+    return render_template('index.html')
+
 
 app.run()
